@@ -30,6 +30,7 @@ async def is_regist(player_id,session:CommandSession,name=None):
         #为玩家进行注册
         conn.sadd('player_info:regist',player_id)
         conn.hset('player_info:name',player_id,name)
+        await session.send('注册成功')
 
     if conn.sismember('player_info:regist',player_id):
         return
