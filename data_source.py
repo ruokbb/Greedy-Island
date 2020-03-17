@@ -1,6 +1,7 @@
 import redis
 import const
 from nonebot import CommandSession
+from single_instance import conn
 async def make_text(text):
     """
 
@@ -24,17 +25,17 @@ async def is_regist(player_id,session:CommandSession,name=None):
     :param session:
     :return:
     """
-    conn = redis.Redis(host=const.HOST, port=const.PORT, password=const.PASSWORD, db=13)
 
     if name is not None:
         #为玩家进行注册
         conn.sadd('player_info:regist',player_id)
         conn.hset('player_info:name',player_id,name)
         await session.send('注册成功')
+        session.state['name'] = None
 
     if conn.sismember('player_info:regist',player_id):
         return
     else:
         message = ['输入用户名完成注册']
         message = await make_text(message)
-        session.pause(message)
+        session.get('name',prompt=message)

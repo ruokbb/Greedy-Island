@@ -12,7 +12,6 @@ async def drawCard(session:CommandSession):
     name = session.state.get('name')
     await is_regist(player_id, session,name)
 
-    number = session.get('number')
     my_card_id = await draw_card(player_id=player_id)
     if len(my_card_id)==0:
         return await session.send('抽卡失败，您已抽过卡')
@@ -29,14 +28,9 @@ async def drawCard(session:CommandSession):
 @drawCard.args_parser
 async def _(session:CommandSession):
     message = session.current_arg_text.strip()
-    session.current_key = 'name'
-    if session.is_first_run:
-        session.current_key='number'
 
-    if session.current_key=='number':
-        pass
-    else:
-        session.state['name'] = message
+    if not session.current_key:return
+    session.state[session.current_key] = message
 
 
 

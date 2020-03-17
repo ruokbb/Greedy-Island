@@ -15,9 +15,4 @@ async def bag_show(session:CommandSession):
 @bag_show.args_parser
 async def _(session:CommandSession):
     message = session.current_arg_text.strip()
-    session.current_key = 'name'
-    if session.is_first_run:
-        session.current_key = 'show'
-
-    if session.current_key == 'name':
-        session.state['name'] = message
+    session.state[session.current_key] = message
