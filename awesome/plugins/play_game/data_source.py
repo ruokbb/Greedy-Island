@@ -13,3 +13,11 @@ async def get_game(next=False):
     else:
         name = conn.get('game:name')
         return str(name)
+
+async def join_game(game_name,id):
+    """
+    参加游戏，将用户id保存到game_name:users
+    param name:
+    :param id:
+    """
+    conn.lpush(game_name+':users',id)
